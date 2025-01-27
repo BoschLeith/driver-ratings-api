@@ -1,12 +1,22 @@
+import { drizzle } from "drizzle-orm/node-postgres";
 import express, { Request, Response } from "express";
+
+import { teamsTable } from "./db/schema";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const db = drizzle(process.env.DATABASE_URL!);
 
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript with Express!");
+});
+
+app.get("/teams", async (req: Request, res: Response) => {
+  const teams = await db.select().from(teamsTable);
+  res.send(teams);
 });
 
 app.listen(PORT, () => {
