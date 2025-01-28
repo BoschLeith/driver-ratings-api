@@ -1,15 +1,8 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 
-import { teamsTable } from "./schema";
+import { driversTable, teamsTable } from "./schema";
 
-const seedDatabase = async () => {
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-  });
-
-  const db = drizzle(pool);
-
+const seedTeams = async (db: NodePgDatabase) => {
   const teams = [
     { name: "Red Bull Racing", fullName: "Oracle Red Bull Racing" },
     { name: "Mercedes", fullName: "Mercedes-AMG PETRONAS F1 Team" },
@@ -27,9 +20,54 @@ const seedDatabase = async () => {
     await db.insert(teamsTable).values(teams);
     console.log("Teams seeded successfully");
   } catch (error) {
+    console.error("Error seeding teams", error);
+  }
+};
+
+const seedDrivers = async (db: NodePgDatabase) => {
+  const drivers = [
+    { name: "Max Verstappen" },
+    { name: "Sergio Pérez" },
+    { name: "Lewis Hamilton" },
+    { name: "George Russell" },
+    { name: "Charles Leclerc" },
+    { name: "Carlos Sainz" },
+    { name: "Lando Norris" },
+    { name: "Oscar Piastri" },
+    { name: "Esteban Ocon" },
+    { name: "Pierre Gasly" },
+    { name: "Yuki Tsunoda" },
+    { name: "Daniel Ricciardo" },
+    { name: "Fernando Alonso" },
+    { name: "Lance Stroll" },
+    { name: "Alex Albon" },
+    { name: "Logan Sargeant" },
+    { name: "Valtteri Bottas" },
+    { name: "Zhou Guanyu" },
+    { name: "Kevin Magnussen" },
+    { name: "Nico Hülkenberg" },
+    { name: "Oliver Bearman" },
+    { name: "Franco Colapinto" },
+    { name: "Liam Lawson" },
+    { name: "Jack Doohan" },
+  ];
+
+  try {
+    await db.insert(driversTable).values(drivers);
+    console.log("Drivers seeded successfully");
+  } catch (error) {
+    console.error("Error seeding drivers", error);
+  }
+};
+
+const seedDatabase = async () => {
+  const db = drizzle(process.env.DATABASE_URL!);
+
+  try {
+    await seedTeams(db);
+    await seedDrivers(db);
+  } catch (error) {
     console.error("Error seeding database", error);
-  } finally {
-    await pool.end();
   }
 };
 

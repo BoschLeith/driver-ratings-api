@@ -1,6 +1,16 @@
 import { sql } from "drizzle-orm";
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
+export const usersTable = pgTable("users", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  email: text().notNull().unique(),
+  password: text().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .default(sql`NULL`)
+    .$onUpdate(() => new Date()),
+});
+
 export const teamsTable = pgTable("teams", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
@@ -11,10 +21,9 @@ export const teamsTable = pgTable("teams", {
     .$onUpdate(() => new Date()),
 });
 
-export const usersTable = pgTable("users", {
+export const driversTable = pgTable("drivers", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  email: text().notNull().unique(),
-  password: text().notNull(),
+  name: text().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .default(sql`NULL`)
@@ -26,3 +35,6 @@ export type SelectUser = typeof usersTable.$inferSelect;
 
 export type InsertTeam = typeof teamsTable.$inferInsert;
 export type SelectTeam = typeof teamsTable.$inferSelect;
+
+export type InsertDriver = typeof driversTable.$inferInsert;
+export type SelectDriver = typeof driversTable.$inferSelect;
