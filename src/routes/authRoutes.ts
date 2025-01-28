@@ -1,27 +1,23 @@
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import { Request, Response, Router } from "express";
-import { Pool } from "pg";
-
 import { drizzle } from "drizzle-orm/node-postgres";
+import { Request, Response, Router } from "express";
+
 import * as schema from "../db/schema";
+import { usersTable } from "../db/schema";
 import { generateToken } from "../utils/jwt";
 
 const router = Router();
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+const db = drizzle(process.env.DATABASE_URL!, { schema });
 
-const db = drizzle(pool, { schema });
-
-// User registration route
+// User registration
 router.post("/register", async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  await db.insert(schema.usersTable).values({
+  await db.insert(usersTable).values({
     email,
     password: hashedPassword,
   });
@@ -29,12 +25,12 @@ router.post("/register", async (req: Request, res: Response) => {
   res.status(201).json({ message: "User registered successfully" });
 });
 
-// User login route
+// User login
 router.post("/login", async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await db.query.usersTable.findFirst({
-    where: eq(schema.usersTable.email, email),
+    where: eq(usersTable.email, email),
   });
 
   if (!user) {
@@ -51,6 +47,9 @@ router.post("/login", async (req: Request, res: Response) => {
   const token = generateToken({
     userId: user.id.toString(),
   });
+
+  res.setHeader("Authorization", `Bearer ${token}`);
+
   res.json({ token });
 });
 
