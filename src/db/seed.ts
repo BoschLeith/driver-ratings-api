@@ -1,6 +1,6 @@
 import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 
-import { driversTable, racesTable, teamsTable } from "./schema";
+import { driversTable, racesTable, ratersTable, teamsTable } from "./schema";
 
 const seedTeams = async (db: NodePgDatabase) => {
   const teams = [
@@ -96,6 +96,17 @@ const seedRaces = async (db: NodePgDatabase) => {
   }
 };
 
+const seedRaters = async (db: NodePgDatabase) => {
+  const raters = [{ name: "Matt" }, { name: "Tommy" }, { name: "Fans" }];
+
+  try {
+    await db.insert(ratersTable).values(raters);
+    console.log("Raters seeded successfully");
+  } catch (error) {
+    console.error("Error seeding raters", error);
+  }
+};
+
 const seedDatabase = async () => {
   const db = drizzle(process.env.DATABASE_URL!);
 
@@ -103,6 +114,7 @@ const seedDatabase = async () => {
     await seedTeams(db);
     await seedDrivers(db);
     await seedRaces(db);
+    await seedRaters(db);
   } catch (error) {
     console.error("Error seeding database", error);
   }

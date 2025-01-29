@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import authRouter from "./routes/authRoutes";
 import driverRouter from "./routes/driverRoutes";
 import raceRouter from "./routes/raceRoutes";
+import raterRouter from "./routes/raterRoutes";
 import teamRouter from "./routes/teamRoutes";
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/drivers", driverRouter);
 app.use("/races", raceRouter);
+app.use("/raters", raterRouter);
 app.use("/teams", teamRouter);
 
 app.get("/", (req: Request, res: Response) => {

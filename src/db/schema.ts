@@ -40,6 +40,15 @@ export const racesTable = pgTable("races", {
     .$onUpdate(() => new Date()),
 });
 
+export const ratersTable = pgTable("raters", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: text().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .default(sql`NULL`)
+    .$onUpdate(() => new Date()),
+});
+
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
 
@@ -51,3 +60,6 @@ export type SelectDriver = typeof driversTable.$inferSelect;
 
 export type InsertRace = typeof racesTable.$inferInsert;
 export type SelectRace = typeof racesTable.$inferSelect;
+
+export type InsertRater = typeof ratersTable.$inferInsert;
+export type SelectRater = typeof ratersTable.$inferSelect;
