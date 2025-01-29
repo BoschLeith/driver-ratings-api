@@ -1,6 +1,6 @@
 import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 
-import { driversTable, teamsTable } from "./schema";
+import { driversTable, racesTable, teamsTable } from "./schema";
 
 const seedTeams = async (db: NodePgDatabase) => {
   const teams = [
@@ -60,12 +60,49 @@ const seedDrivers = async (db: NodePgDatabase) => {
   }
 };
 
+const seedRaces = async (db: NodePgDatabase) => {
+  const races = [
+    { name: "Bahrain Grand Prix", date: "2024-03-02" },
+    { name: "Saudi Arabian Grand Prix", date: "2024-03-09" },
+    { name: "Australian Grand Prix", date: "2024-03-24" },
+    { name: "Japanese Grand Prix", date: "2024-04-07" },
+    { name: "Chinese Grand Prix", date: "2024-04-21" },
+    { name: "Miami Grand Prix", date: "2024-05-05" },
+    { name: "Emilia-Romagna Grand Prix", date: "2024-05-19" },
+    { name: "Monaco Grand Prix", date: "2024-05-26" },
+    { name: "Canadian Grand Prix", date: "2024-06-09" },
+    { name: "Spanish Grand Prix", date: "2024-06-23" },
+    { name: "Austrian Grand Prix", date: "2024-06-30" },
+    { name: "British Grand Prix", date: "2024-07-07" },
+    { name: "Hungarian Grand Prix", date: "2024-07-21" },
+    { name: "Belgian Grand Prix", date: "2024-07-28" },
+    { name: "Dutch Grand Prix", date: "2024-08-25" },
+    { name: "Italian Grand Prix", date: "2024-09-01" },
+    { name: "Azerbaijan Grand Prix", date: "2024-09-15" },
+    { name: "Singapore Grand Prix", date: "2024-09-22" },
+    { name: "United States Grand Prix", date: "2024-10-20" },
+    { name: "Mexican Grand Prix", date: "2024-10-27" },
+    { name: "Brazilian Grand Prix", date: "2024-11-03" },
+    { name: "Las Vegas Grand Prix", date: "2024-11-23" },
+    { name: "Qatar Grand Prix", date: "2024-12-01" },
+    { name: "Abu Dhabi Grand Prix", date: "2024-12-08" },
+  ];
+
+  try {
+    await db.insert(racesTable).values(races);
+    console.log("Races seeded successfully");
+  } catch (error) {
+    console.error("Error seeding races", error);
+  }
+};
+
 const seedDatabase = async () => {
   const db = drizzle(process.env.DATABASE_URL!);
 
   try {
     await seedTeams(db);
     await seedDrivers(db);
+    await seedRaces(db);
   } catch (error) {
     console.error("Error seeding database", error);
   }

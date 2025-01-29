@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { date, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -30,6 +30,16 @@ export const driversTable = pgTable("drivers", {
     .$onUpdate(() => new Date()),
 });
 
+export const racesTable = pgTable("races", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: text().notNull(),
+  date: date().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .default(sql`NULL`)
+    .$onUpdate(() => new Date()),
+});
+
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
 
@@ -38,3 +48,6 @@ export type SelectTeam = typeof teamsTable.$inferSelect;
 
 export type InsertDriver = typeof driversTable.$inferInsert;
 export type SelectDriver = typeof driversTable.$inferSelect;
+
+export type InsertRace = typeof racesTable.$inferInsert;
+export type SelectRace = typeof racesTable.$inferSelect;
