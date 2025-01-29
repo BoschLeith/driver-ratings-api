@@ -74,6 +74,23 @@ export const ratingsTable = pgTable("ratings", {
     .$onUpdate(() => new Date()),
 });
 
+export const driverTeamsTable = pgTable("driver_teams", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  driverId: integer("driver_id")
+    .references(() => driversTable.id)
+    .notNull(),
+  teamId: integer("team_id")
+    .references(() => teamsTable.id)
+    .notNull(),
+  raceId: integer("race_id")
+    .references(() => racesTable.id)
+    .notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .default(sql`NULL`)
+    .$onUpdate(() => new Date()),
+});
+
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
 
@@ -91,3 +108,6 @@ export type SelectRater = typeof ratersTable.$inferSelect;
 
 export type InsertRating = typeof ratingsTable.$inferInsert;
 export type SelectRating = typeof ratingsTable.$inferSelect;
+
+export type InsertDriverTeam = typeof driverTeamsTable.$inferInsert;
+export type SelectDriverTeam = typeof driverTeamsTable.$inferSelect;

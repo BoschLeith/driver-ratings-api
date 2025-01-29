@@ -2,6 +2,7 @@ import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 
 import {
   driversTable,
+  driverTeamsTable,
   racesTable,
   ratersTable,
   ratingsTable,
@@ -143,15 +144,47 @@ const seedRatings = async (db: NodePgDatabase) => {
   }
 };
 
+const seedDriverTeam = async (db: NodePgDatabase) => {
+  const driverTeam = [
+    { driverId: 1, teamId: 1, raceId: 1 },
+    { driverId: 2, teamId: 1, raceId: 1 },
+    { driverId: 3, teamId: 2, raceId: 1 },
+    { driverId: 4, teamId: 2, raceId: 1 },
+    { driverId: 5, teamId: 3, raceId: 1 },
+    { driverId: 6, teamId: 3, raceId: 1 },
+    { driverId: 7, teamId: 4, raceId: 1 },
+    { driverId: 8, teamId: 4, raceId: 1 },
+    { driverId: 9, teamId: 5, raceId: 1 },
+    { driverId: 10, teamId: 5, raceId: 1 },
+    { driverId: 11, teamId: 6, raceId: 1 },
+    { driverId: 12, teamId: 6, raceId: 1 },
+    { driverId: 13, teamId: 7, raceId: 1 },
+    { driverId: 14, teamId: 7, raceId: 1 },
+    { driverId: 15, teamId: 8, raceId: 1 },
+    { driverId: 16, teamId: 8, raceId: 1 },
+    { driverId: 17, teamId: 9, raceId: 1 },
+    { driverId: 18, teamId: 9, raceId: 1 },
+    { driverId: 19, teamId: 10, raceId: 1 },
+    { driverId: 20, teamId: 10, raceId: 1 },
+  ];
+  try {
+    await db.insert(driverTeamsTable).values(driverTeam);
+    console.log("Ratings seeded successfully");
+  } catch (error) {
+    console.error("Error seeding raters", error);
+  }
+};
+
 const seedDatabase = async () => {
   const db = drizzle(process.env.DATABASE_URL!);
 
   try {
-    // await seedTeams(db);
-    // await seedDrivers(db);
-    // await seedRaces(db);
-    // await seedRaters(db);
+    await seedTeams(db);
+    await seedDrivers(db);
+    await seedRaces(db);
+    await seedRaters(db);
     await seedRatings(db);
+    await seedDriverTeam(db);
   } catch (error) {
     console.error("Error seeding database", error);
   }
