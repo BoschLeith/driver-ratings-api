@@ -1,5 +1,12 @@
 import { sql } from "drizzle-orm";
-import { date, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  date,
+  integer,
+  pgTable,
+  real,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -49,6 +56,24 @@ export const ratersTable = pgTable("raters", {
     .$onUpdate(() => new Date()),
 });
 
+export const ratingsTable = pgTable("ratings", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  driverId: integer("driver_id")
+    .references(() => driversTable.id)
+    .notNull(),
+  raceId: integer("race_id")
+    .references(() => racesTable.id)
+    .notNull(),
+  raterId: integer("rater_id")
+    .references(() => ratersTable.id)
+    .notNull(),
+  rating: real().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .default(sql`NULL`)
+    .$onUpdate(() => new Date()),
+});
+
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
 
@@ -63,3 +88,6 @@ export type SelectRace = typeof racesTable.$inferSelect;
 
 export type InsertRater = typeof ratersTable.$inferInsert;
 export type SelectRater = typeof ratersTable.$inferSelect;
+
+export type InsertRating = typeof ratingsTable.$inferInsert;
+export type SelectRating = typeof ratingsTable.$inferSelect;
