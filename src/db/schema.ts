@@ -58,11 +58,8 @@ export const ratersTable = pgTable("raters", {
 
 export const ratingsTable = pgTable("ratings", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  driverId: integer("driver_id")
-    .references(() => driversTable.id)
-    .notNull(),
-  raceId: integer("race_id")
-    .references(() => racesTable.id)
+  driverTeamId: integer("driver_team_id")
+    .references(() => driverTeamsTable.id)
     .notNull(),
   raterId: integer("rater_id")
     .references(() => ratersTable.id)

@@ -117,20 +117,17 @@ const seedRaters = async (db: NodePgDatabase) => {
 const seedRatings = async (db: NodePgDatabase) => {
   const ratings = [
     {
-      driverId: 1,
-      raceId: 1,
+      driverTeamId: 1,
       raterId: 1,
       rating: 10,
     },
     {
-      driverId: 1,
-      raceId: 1,
+      driverTeamId: 1,
       raterId: 2,
       rating: 9,
     },
     {
-      driverId: 1,
-      raceId: 1,
+      driverTeamId: 1,
       raterId: 3,
       rating: 8,
     },

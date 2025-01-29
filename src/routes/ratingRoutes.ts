@@ -44,12 +44,11 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 // Create a New Rating
 router.post("/", authenticateJWT, async (req: Request, res: Response) => {
-  const { driverId, raceId, raterId, rating } = req.body;
+  const { driverTeamId, raterId, rating } = req.body;
 
   try {
     await db.insert(ratingsTable).values({
-      driverId,
-      raceId,
+      driverTeamId,
       raterId,
       rating,
     });
@@ -64,11 +63,10 @@ router.post("/", authenticateJWT, async (req: Request, res: Response) => {
 // Update Rating by ID
 router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { driverId, raceId, raterId, rating } = req.body;
+  const { driverTeamId, raterId, rating } = req.body;
 
   const updateData: InsertRating = {
-    driverId,
-    raceId,
+    driverTeamId,
     raterId,
     rating,
   };
