@@ -1,18 +1,20 @@
-import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
 import { Request, Response, Router } from "express";
 
 import { authenticateJWT } from "../middlewares/authMiddleware";
-import { InsertRating, ratingsTable } from "../db/schema";
+import {
+  createRating,
+  deleteRating,
+  getAllRatings,
+  getRatingById,
+  updateRating,
+} from "../services/ratingService";
 
 const router = Router();
-
-const db = drizzle(process.env.DATABASE_URL!);
 
 // Get All Ratings
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const ratings = await db.select().from(ratingsTable);
+    const ratings = await getAllRatings();
     res.status(200).json({ success: true, data: ratings });
   } catch (error) {
     console.error("Error fetching ratings:", error);
@@ -25,14 +27,12 @@ router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const rating = await db
-      .select()
-      .from(ratingsTable)
-      .where(eq(ratingsTable.id, Number(id)));
+    const rating = await getRatingById(Number(id));
 
     if (rating.length === 0) {
-      res.status(404).json({ success: false, message: "Rating not found" });
-      return;
+      return res
+        .status(404)
+        .json({ success: false, message: "Rating not found" });
     }
 
     res.status(200).json({ success: true, data: rating });
@@ -46,13 +46,15 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/", authenticateJWT, async (req: Request, res: Response) => {
   const { driverTeamId, raterId, rating } = req.body;
 
-  try {
-    await db.insert(ratingsTable).values({
-      driverTeamId,
-      raterId,
-      rating,
+  if (!driverTeamId || !raterId || !rating) {
+    return res.status(400).json({
+      success: false,
+      message: "Driver Team ID, Rater ID, and Rating are required",
     });
+  }
 
+  try {
+    await createRating({ driverTeamId, raterId, rating });
     res.status(201).json({ message: "Rating created successfully" });
   } catch (error) {
     console.error("Error creating rating:", error);
@@ -65,28 +67,23 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { driverTeamId, raterId, rating } = req.body;
 
-  const updateData: InsertRating = {
-    driverTeamId,
-    raterId,
-    rating,
-  };
+  if (!driverTeamId || !raterId || !rating) {
+    return res.status(400).json({
+      success: false,
+      message: "Driver Team ID, Rater ID, and Rating are required",
+    });
+  }
 
   try {
-    const existingRating = await db
-      .select()
-      .from(ratingsTable)
-      .where(eq(ratingsTable.id, Number(id)));
+    const existingRating = await getRatingById(Number(id));
 
     if (existingRating.length === 0) {
-      res.status(404).json({ success: false, message: "Rating not found" });
-      return;
+      return res
+        .status(404)
+        .json({ success: false, message: "Rating not found" });
     }
 
-    await db
-      .update(ratingsTable)
-      .set(updateData)
-      .where(eq(ratingsTable.id, Number(id)));
-
+    await updateRating(Number(id), { driverTeamId, raterId, rating });
     res.status(200).json({ message: "Rating updated successfully" });
   } catch (error) {
     console.error("Error updating rating:", error);
@@ -99,18 +96,15 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const existingRating = await db
-      .select()
-      .from(ratingsTable)
-      .where(eq(ratingsTable.id, Number(id)));
+    const existingRating = await getRatingById(Number(id));
 
     if (existingRating.length === 0) {
-      res.status(404).json({ success: false, message: "Rating not found" });
-      return;
+      return res
+        .status(404)
+        .json({ success: false, message: "Rating not found" });
     }
 
-    await db.delete(ratingsTable).where(eq(ratingsTable.id, Number(id)));
-
+    await deleteRating(Number(id));
     res.status(200).json({ message: "Rating deleted successfully" });
   } catch (error) {
     console.error("Error deleting rating:", error);
