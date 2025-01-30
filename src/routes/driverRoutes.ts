@@ -27,9 +27,9 @@ router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const driver = await getDriverById(Number(id));
+    const [driver] = await getDriverById(Number(id));
 
-    if (driver.length === 0) {
+    if (!driver) {
       return res
         .status(404)
         .json({ success: false, message: "Driver not found" });
@@ -73,9 +73,9 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   }
 
   try {
-    const existingDriver = await getDriverById(Number(id));
+    const [existingDriver] = await getDriverById(Number(id));
 
-    if (existingDriver.length === 0) {
+    if (!existingDriver) {
       return res
         .status(404)
         .json({ success: false, message: "Driver not found" });
@@ -94,9 +94,9 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const existingDriver = await getDriverById(Number(id));
+    const [existingDriver] = await getDriverById(Number(id));
 
-    if (existingDriver.length === 0) {
+    if (!existingDriver) {
       return res
         .status(404)
         .json({ success: false, message: "Driver not found" });

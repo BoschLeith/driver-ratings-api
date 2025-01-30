@@ -27,9 +27,9 @@ router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const race = await getRaceById(Number(id));
+    const [race] = await getRaceById(Number(id));
 
-    if (race.length === 0) {
+    if (!race) {
       return res
         .status(404)
         .json({ success: false, message: "Race not found" });
@@ -73,9 +73,9 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   }
 
   try {
-    const existingRace = await getRaceById(Number(id));
+    const [existingRace] = await getRaceById(Number(id));
 
-    if (existingRace.length === 0) {
+    if (!existingRace) {
       return res
         .status(404)
         .json({ success: false, message: "Race not found" });
@@ -94,9 +94,9 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const existingRace = await getRaceById(Number(id));
+    const [existingRace] = await getRaceById(Number(id));
 
-    if (existingRace.length === 0) {
+    if (!existingRace) {
       return res
         .status(404)
         .json({ success: false, message: "Race not found" });

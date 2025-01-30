@@ -27,9 +27,9 @@ router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const rater = await getRaterById(Number(id));
+    const [rater] = await getRaterById(Number(id));
 
-    if (rater.length === 0) {
+    if (!rater) {
       return res
         .status(404)
         .json({ success: false, message: "Rater not found" });
@@ -73,9 +73,9 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   }
 
   try {
-    const existingRater = await getRaterById(Number(id));
+    const [existingRater] = await getRaterById(Number(id));
 
-    if (existingRater.length === 0) {
+    if (!existingRater) {
       return res
         .status(404)
         .json({ success: false, message: "Rater not found" });
@@ -94,9 +94,9 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const existingRater = await getRaterById(Number(id));
+    const [existingRater] = await getRaterById(Number(id));
 
-    if (existingRater.length === 0) {
+    if (!existingRater) {
       return res
         .status(404)
         .json({ success: false, message: "Rater not found" });
