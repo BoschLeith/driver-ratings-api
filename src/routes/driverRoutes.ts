@@ -1,18 +1,20 @@
-import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
 import { Request, Response, Router } from "express";
 
-import { driversTable, InsertDriver } from "../db/schema";
 import { authenticateJWT } from "../middlewares/authMiddleware";
+import {
+  createDriver,
+  deleteDriver,
+  getAllDrivers,
+  getDriverById,
+  updateDriver,
+} from "../services/driverService";
 
 const router = Router();
-
-const db = drizzle(process.env.DATABASE_URL!);
 
 // Get All Drivers
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const drivers = await db.select().from(driversTable);
+    const drivers = await getAllDrivers();
     res.status(200).json({ success: true, data: drivers });
   } catch (error) {
     console.error("Error fetching drivers:", error);
@@ -25,14 +27,12 @@ router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const driver = await db
-      .select()
-      .from(driversTable)
-      .where(eq(driversTable.id, Number(id)));
+    const driver = await getDriverById(Number(id));
 
     if (driver.length === 0) {
-      res.status(404).json({ success: false, message: "Driver not found" });
-      return;
+      return res
+        .status(404)
+        .json({ success: false, message: "Driver not found" });
     }
 
     res.status(200).json({ success: true, data: driver });
@@ -46,11 +46,14 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/", authenticateJWT, async (req: Request, res: Response) => {
   const { name } = req.body;
 
-  try {
-    await db.insert(driversTable).values({
-      name,
-    });
+  if (!name) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Name is required" });
+  }
 
+  try {
+    await createDriver({ name });
     res.status(201).json({ message: "Driver created successfully" });
   } catch (error) {
     console.error("Error creating driver:", error);
@@ -63,26 +66,22 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name } = req.body;
 
-  const updateData: InsertDriver = {
-    name,
-  };
+  if (!name) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Name is required" });
+  }
 
   try {
-    const existingDriver = await db
-      .select()
-      .from(driversTable)
-      .where(eq(driversTable.id, Number(id)));
+    const existingDriver = await getDriverById(Number(id));
 
     if (existingDriver.length === 0) {
-      res.status(404).json({ success: false, message: "Driver not found" });
-      return;
+      return res
+        .status(404)
+        .json({ success: false, message: "Driver not found" });
     }
 
-    await db
-      .update(driversTable)
-      .set(updateData)
-      .where(eq(driversTable.id, Number(id)));
-
+    await updateDriver(Number(id), { name });
     res.status(200).json({ message: "Driver updated successfully" });
   } catch (error) {
     console.error("Error updating driver:", error);
@@ -95,17 +94,15 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const existingDriver = await db
-      .select()
-      .from(driversTable)
-      .where(eq(driversTable.id, Number(id)));
+    const existingDriver = await getDriverById(Number(id));
 
     if (existingDriver.length === 0) {
-      res.status(404).json({ success: false, message: "Driver not found" });
-      return;
+      return res
+        .status(404)
+        .json({ success: false, message: "Driver not found" });
     }
 
-    await db.delete(driversTable).where(eq(driversTable.id, Number(id)));
+    await deleteDriver(Number(id));
 
     res.status(200).json({ message: "Driver deleted successfully" });
   } catch (error) {
