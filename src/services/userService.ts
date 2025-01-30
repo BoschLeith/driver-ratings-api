@@ -1,15 +1,14 @@
-// userService.ts
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 
 import db from "../db";
-import { usersTable } from "../db/schema";
+import { InsertUser, usersTable } from "../db/schema";
 
-export const registerUser = async (email: string, password: string) => {
-  const hashedPassword = await bcrypt.hash(password, 10);
+export const registerUser = async (userData: InsertUser) => {
+  const hashedPassword = await bcrypt.hash(userData.password, 10);
 
   await db.insert(usersTable).values({
-    email,
+    email: userData.email,
     password: hashedPassword,
   });
 };
