@@ -1,18 +1,20 @@
-import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
 import { Request, Response, Router } from "express";
 
 import { authenticateJWT } from "../middlewares/authMiddleware";
-import { InsertRater, ratersTable } from "../db/schema";
+import {
+  createRater,
+  deleteRater,
+  getAllRaters,
+  getRaterById,
+  updateRater,
+} from "../services/raterService";
 
 const router = Router();
-
-const db = drizzle(process.env.DATABASE_URL!);
 
 // Get All Raters
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const raters = await db.select().from(ratersTable);
+    const raters = await getAllRaters();
     res.status(200).json({ success: true, data: raters });
   } catch (error) {
     console.error("Error fetching raters:", error);
@@ -25,14 +27,12 @@ router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const rater = await db
-      .select()
-      .from(ratersTable)
-      .where(eq(ratersTable.id, Number(id)));
+    const rater = await getRaterById(Number(id));
 
     if (rater.length === 0) {
-      res.status(404).json({ success: false, message: "Rater not found" });
-      return;
+      return res
+        .status(404)
+        .json({ success: false, message: "Rater not found" });
     }
 
     res.status(200).json({ success: true, data: rater });
@@ -46,11 +46,14 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/", authenticateJWT, async (req: Request, res: Response) => {
   const { name } = req.body;
 
-  try {
-    await db.insert(ratersTable).values({
-      name,
-    });
+  if (!name) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Name is required" });
+  }
 
+  try {
+    await createRater({ name });
     res.status(201).json({ message: "Rater created successfully" });
   } catch (error) {
     console.error("Error creating rater:", error);
@@ -63,26 +66,22 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name } = req.body;
 
-  const updateData: InsertRater = {
-    name,
-  };
+  if (!name) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Name is required" });
+  }
 
   try {
-    const existingRater = await db
-      .select()
-      .from(ratersTable)
-      .where(eq(ratersTable.id, Number(id)));
+    const existingRater = await getRaterById(Number(id));
 
     if (existingRater.length === 0) {
-      res.status(404).json({ success: false, message: "Rater not found" });
-      return;
+      return res
+        .status(404)
+        .json({ success: false, message: "Rater not found" });
     }
 
-    await db
-      .update(ratersTable)
-      .set(updateData)
-      .where(eq(ratersTable.id, Number(id)));
-
+    await updateRater(Number(id), { name });
     res.status(200).json({ message: "Rater updated successfully" });
   } catch (error) {
     console.error("Error updating rater:", error);
@@ -95,18 +94,15 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const existingRater = await db
-      .select()
-      .from(ratersTable)
-      .where(eq(ratersTable.id, Number(id)));
+    const existingRater = await getRaterById(Number(id));
 
     if (existingRater.length === 0) {
-      res.status(404).json({ success: false, message: "Rater not found" });
-      return;
+      return res
+        .status(404)
+        .json({ success: false, message: "Rater not found" });
     }
 
-    await db.delete(ratersTable).where(eq(ratersTable.id, Number(id)));
-
+    await deleteRater(Number(id));
     res.status(200).json({ message: "Rater deleted successfully" });
   } catch (error) {
     console.error("Error deleting rater:", error);
