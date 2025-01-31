@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import express, { Request, Response } from "express";
 
 import authRouter from "./routes/authRoutes";
@@ -12,6 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/auth", authRouter);
 app.use("/drivers", driverRouter);

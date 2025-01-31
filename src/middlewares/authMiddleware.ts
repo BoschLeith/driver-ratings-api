@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 
-import { verifyToken } from "../utils/jwt";
+import { verifyAccessToken } from "../utils/jwt";
 
 export const authenticateJWT = (
   req: Request,
@@ -16,7 +16,7 @@ export const authenticateJWT = (
   }
 
   try {
-    req.user = verifyToken(token);
+    req.user = verifyAccessToken(token);
     next();
   } catch (error) {
     res.status(403).json({ message: "Invalid or expired token" });
