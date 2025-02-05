@@ -24,6 +24,11 @@ router.post("/register", async (req: Request, res: Response) => {
   }
 
   try {
+    const [existingUser] = await findUserByEmail(email);
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already exists" });
+    }
+
     await registerUser({ email, password });
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
@@ -66,7 +71,7 @@ router.post("/login", async (req: Request, res: Response) => {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
-    res.json({ accessToken });
+    res.json({ email: user.email, accessToken });
   } catch (error) {
     console.error("Error logging in user:", error);
     res.status(500).json({ message: "Internal Server Error" });

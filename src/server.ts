@@ -1,4 +1,5 @@
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import express, { Request, Response } from "express";
 
 import authRouter from "./routes/authRoutes";
@@ -11,17 +12,30 @@ import teamRouter from "./routes/teamRoutes";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://127.0.0.1:5173";
 
+app.use(
+  cors({
+    origin: CORS_ORIGIN, // Replace with your allowed origin
+    methods: ["GET", "POST"], // Specify allowed methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/auth", authRouter);
-app.use("/drivers", driverRouter);
-app.use("/driverTeams", driverTeamsRouter);
-app.use("/races", raceRouter);
-app.use("/raters", raterRouter);
-app.use("/ratings", ratingRouter);
-app.use("/teams", teamRouter);
+const apiRouter = express.Router();
+
+apiRouter.use("/auth", authRouter);
+apiRouter.use("/drivers", driverRouter);
+apiRouter.use("/driverTeams", driverTeamsRouter);
+apiRouter.use("/races", raceRouter);
+apiRouter.use("/raters", raterRouter);
+apiRouter.use("/ratings", ratingRouter);
+apiRouter.use("/teams", teamRouter);
+
+app.use("/api", apiRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript with Express!");
