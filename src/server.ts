@@ -9,6 +9,7 @@ import raceRouter from "./routes/raceRoutes";
 import raterRouter from "./routes/raterRoutes";
 import ratingRouter from "./routes/ratingRoutes";
 import teamRouter from "./routes/teamRoutes";
+import morgan from "morgan";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,14 +17,15 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://127.0.0.1:5173";
 
 app.use(
   cors({
-    origin: CORS_ORIGIN, // Replace with your allowed origin
-    methods: ["GET", "POST"], // Specify allowed methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+    origin: CORS_ORIGIN,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use(morgan("dev"));
 
 const apiRouter = express.Router();
 
