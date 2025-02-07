@@ -4,7 +4,7 @@ import db from "../db";
 import { InsertRace, racesTable } from "../db/schema";
 
 export const getAllRaces = async () => {
-  return await db.select().from(racesTable);
+  return await db.select().from(racesTable).orderBy(racesTable.id);
 };
 
 export const getRaceById = async (id: number) => {
