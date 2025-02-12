@@ -1,33 +1,27 @@
 import { eq } from "drizzle-orm";
 
 import db from "../db";
-import { InsertDriverTeam, driverTeamsTable } from "../db/schema";
+import { InsertDriverTeam, driverTeams } from "../db/schema";
 
 export const getAllDriverTeams = async () => {
-  return await db.select().from(driverTeamsTable);
+  return await db.select().from(driverTeams);
 };
 
 export const getDriverTeamById = async (id: number) => {
-  return await db
-    .select()
-    .from(driverTeamsTable)
-    .where(eq(driverTeamsTable.id, id));
+  return await db.select().from(driverTeams).where(eq(driverTeams.id, id));
 };
 
-export const createDriverTeam = async (driverTeamData: InsertDriverTeam) => {
-  await db.insert(driverTeamsTable).values(driverTeamData);
+export const createDriverTeam = async (driverTeam: InsertDriverTeam) => {
+  await db.insert(driverTeams).values(driverTeam);
 };
 
 export const updateDriverTeam = async (
   id: number,
-  driverTeamData: InsertDriverTeam
+  driverTeam: InsertDriverTeam
 ) => {
-  await db
-    .update(driverTeamsTable)
-    .set(driverTeamData)
-    .where(eq(driverTeamsTable.id, id));
+  await db.update(driverTeams).set(driverTeam).where(eq(driverTeams.id, id));
 };
 
 export const deleteDriverTeam = async (id: number) => {
-  await db.delete(driverTeamsTable).where(eq(driverTeamsTable.id, id));
+  await db.delete(driverTeams).where(eq(driverTeams.id, id));
 };

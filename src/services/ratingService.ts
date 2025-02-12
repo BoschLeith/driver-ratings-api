@@ -1,24 +1,24 @@
 import { eq } from "drizzle-orm";
 
 import db from "../db";
-import { InsertRating, ratingsTable } from "../db/schema";
+import { InsertRating, ratings } from "../db/schema";
 
 export const getAllRatings = async () => {
-  return await db.select().from(ratingsTable);
+  return await db.select().from(ratings);
 };
 
 export const getRatingById = async (id: number) => {
-  return await db.select().from(ratingsTable).where(eq(ratingsTable.id, id));
+  return await db.select().from(ratings).where(eq(ratings.id, id));
 };
 
-export const createRating = async (ratingData: InsertRating) => {
-  await db.insert(ratingsTable).values(ratingData);
+export const createRating = async (rating: InsertRating) => {
+  await db.insert(ratings).values(rating);
 };
 
-export const updateRating = async (id: number, ratingData: InsertRating) => {
-  await db.update(ratingsTable).set(ratingData).where(eq(ratingsTable.id, id));
+export const updateRating = async (id: number, rating: InsertRating) => {
+  await db.update(ratings).set(rating).where(eq(ratings.id, id));
 };
 
 export const deleteRating = async (id: number) => {
-  await db.delete(ratingsTable).where(eq(ratingsTable.id, id));
+  await db.delete(ratings).where(eq(ratings.id, id));
 };

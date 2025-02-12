@@ -1,16 +1,9 @@
 import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 
-import {
-  driversTable,
-  driverTeamsTable,
-  racesTable,
-  ratersTable,
-  ratingsTable,
-  teamsTable,
-} from "./schema";
+import { drivers, driverTeams, races, raters, ratings, teams } from "./schema";
 
 const seedTeams = async (db: NodePgDatabase) => {
-  const teams = [
+  const TEAMS = [
     { name: "Red Bull Racing", fullName: "Oracle Red Bull Racing" },
     { name: "Mercedes", fullName: "Mercedes-AMG PETRONAS F1 Team" },
     { name: "Ferrari", fullName: "Scuderia Ferrari HP" },
@@ -24,7 +17,7 @@ const seedTeams = async (db: NodePgDatabase) => {
   ];
 
   try {
-    await db.insert(teamsTable).values(teams);
+    await db.insert(teams).values(TEAMS);
     console.log("Teams seeded successfully");
   } catch (error) {
     console.error("Error seeding teams", error);
@@ -32,7 +25,7 @@ const seedTeams = async (db: NodePgDatabase) => {
 };
 
 const seedDrivers = async (db: NodePgDatabase) => {
-  const drivers = [
+  const DRIVERS = [
     { name: "Max Verstappen" },
     { name: "Sergio Pérez" },
     { name: "Lewis Hamilton" },
@@ -60,7 +53,7 @@ const seedDrivers = async (db: NodePgDatabase) => {
   ];
 
   try {
-    await db.insert(driversTable).values(drivers);
+    await db.insert(drivers).values(DRIVERS);
     console.log("Drivers seeded successfully");
   } catch (error) {
     console.error("Error seeding drivers", error);
@@ -68,7 +61,7 @@ const seedDrivers = async (db: NodePgDatabase) => {
 };
 
 const seedRaces = async (db: NodePgDatabase) => {
-  const races = [
+  const RACES = [
     { name: "Bahrain Grand Prix", date: "2024-03-02" },
     { name: "Saudi Arabian Grand Prix", date: "2024-03-09" },
     { name: "Australian Grand Prix", date: "2024-03-24" },
@@ -96,7 +89,7 @@ const seedRaces = async (db: NodePgDatabase) => {
   ];
 
   try {
-    await db.insert(racesTable).values(races);
+    await db.insert(races).values(RACES);
     console.log("Races seeded successfully");
   } catch (error) {
     console.error("Error seeding races", error);
@@ -104,10 +97,10 @@ const seedRaces = async (db: NodePgDatabase) => {
 };
 
 const seedRaters = async (db: NodePgDatabase) => {
-  const raters = [{ name: "Matt" }, { name: "Tommy" }, { name: "Fans" }];
+  const RATERS = [{ name: "Matt" }, { name: "Tommy" }, { name: "Fans" }];
 
   try {
-    await db.insert(ratersTable).values(raters);
+    await db.insert(raters).values(RATERS);
     console.log("Raters seeded successfully");
   } catch (error) {
     console.error("Error seeding raters", error);
@@ -115,7 +108,7 @@ const seedRaters = async (db: NodePgDatabase) => {
 };
 
 const seedRatings = async (db: NodePgDatabase) => {
-  const ratings = [
+  const RATINGS = [
     {
       driverTeamId: 1,
       raterId: 1,
@@ -134,15 +127,15 @@ const seedRatings = async (db: NodePgDatabase) => {
   ];
 
   try {
-    await db.insert(ratingsTable).values(ratings);
+    await db.insert(ratings).values(RATINGS);
     console.log("Ratings seeded successfully");
   } catch (error) {
-    console.error("Error seeding raters", error);
+    console.error("Error seeding ratings", error);
   }
 };
 
 const seedDriverTeam = async (db: NodePgDatabase) => {
-  const driverTeam = [
+  const DRIVER_TEAMS = [
     { driverId: 1, teamId: 1, raceId: 1 },
     { driverId: 2, teamId: 1, raceId: 1 },
     { driverId: 3, teamId: 2, raceId: 1 },
@@ -165,10 +158,10 @@ const seedDriverTeam = async (db: NodePgDatabase) => {
     { driverId: 20, teamId: 10, raceId: 1 },
   ];
   try {
-    await db.insert(driverTeamsTable).values(driverTeam);
-    console.log("Ratings seeded successfully");
+    await db.insert(driverTeams).values(DRIVER_TEAMS);
+    console.log("DriverTeams seeded successfully");
   } catch (error) {
-    console.error("Error seeding raters", error);
+    console.error("Error seeding driverTeams", error);
   }
 };
 

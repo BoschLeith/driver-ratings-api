@@ -8,7 +8,7 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 
-export const usersTable = pgTable("users", {
+export const users = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   email: text().notNull().unique(),
   password: text().notNull(),
@@ -19,7 +19,7 @@ export const usersTable = pgTable("users", {
     .$onUpdate(() => new Date()),
 });
 
-export const teamsTable = pgTable("teams", {
+export const teams = pgTable("teams", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   fullName: text("full_name").notNull(),
@@ -29,7 +29,7 @@ export const teamsTable = pgTable("teams", {
     .$onUpdate(() => new Date()),
 });
 
-export const driversTable = pgTable("drivers", {
+export const drivers = pgTable("drivers", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -38,7 +38,7 @@ export const driversTable = pgTable("drivers", {
     .$onUpdate(() => new Date()),
 });
 
-export const racesTable = pgTable("races", {
+export const races = pgTable("races", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   date: date().notNull(),
@@ -48,7 +48,7 @@ export const racesTable = pgTable("races", {
     .$onUpdate(() => new Date()),
 });
 
-export const ratersTable = pgTable("raters", {
+export const raters = pgTable("raters", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -57,13 +57,13 @@ export const ratersTable = pgTable("raters", {
     .$onUpdate(() => new Date()),
 });
 
-export const ratingsTable = pgTable("ratings", {
+export const ratings = pgTable("ratings", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   driverTeamId: integer("driver_team_id")
-    .references(() => driverTeamsTable.id)
+    .references(() => driverTeams.id)
     .notNull(),
   raterId: integer("rater_id")
-    .references(() => ratersTable.id)
+    .references(() => raters.id)
     .notNull(),
   rating: real().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -72,16 +72,16 @@ export const ratingsTable = pgTable("ratings", {
     .$onUpdate(() => new Date()),
 });
 
-export const driverTeamsTable = pgTable("driver_teams", {
+export const driverTeams = pgTable("driver_teams", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   driverId: integer("driver_id")
-    .references(() => driversTable.id)
+    .references(() => drivers.id)
     .notNull(),
   teamId: integer("team_id")
-    .references(() => teamsTable.id)
+    .references(() => teams.id)
     .notNull(),
   raceId: integer("race_id")
-    .references(() => racesTable.id)
+    .references(() => races.id)
     .notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
@@ -89,23 +89,23 @@ export const driverTeamsTable = pgTable("driver_teams", {
     .$onUpdate(() => new Date()),
 });
 
-export type InsertUser = typeof usersTable.$inferInsert;
-export type SelectUser = typeof usersTable.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
+export type SelectUser = typeof users.$inferSelect;
 
-export type InsertTeam = typeof teamsTable.$inferInsert;
-export type SelectTeam = typeof teamsTable.$inferSelect;
+export type InsertTeam = typeof teams.$inferInsert;
+export type SelectTeam = typeof teams.$inferSelect;
 
-export type InsertDriver = typeof driversTable.$inferInsert;
-export type SelectDriver = typeof driversTable.$inferSelect;
+export type InsertDriver = typeof drivers.$inferInsert;
+export type SelectDriver = typeof drivers.$inferSelect;
 
-export type InsertRace = typeof racesTable.$inferInsert;
-export type SelectRace = typeof racesTable.$inferSelect;
+export type InsertRace = typeof races.$inferInsert;
+export type SelectRace = typeof races.$inferSelect;
 
-export type InsertRater = typeof ratersTable.$inferInsert;
-export type SelectRater = typeof ratersTable.$inferSelect;
+export type InsertRater = typeof raters.$inferInsert;
+export type SelectRater = typeof raters.$inferSelect;
 
-export type InsertRating = typeof ratingsTable.$inferInsert;
-export type SelectRating = typeof ratingsTable.$inferSelect;
+export type InsertRating = typeof ratings.$inferInsert;
+export type SelectRating = typeof ratings.$inferSelect;
 
-export type InsertDriverTeam = typeof driverTeamsTable.$inferInsert;
-export type SelectDriverTeam = typeof driverTeamsTable.$inferSelect;
+export type InsertDriverTeam = typeof driverTeams.$inferInsert;
+export type SelectDriverTeam = typeof driverTeams.$inferSelect;
