@@ -1,6 +1,13 @@
+import { getTableName, sql, Table } from "drizzle-orm";
 import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 
 import { drivers, driverTeams, races, raters, ratings, teams } from "./schema";
+
+async function resetTable(db: NodePgDatabase, table: Table) {
+  return db.execute(
+    sql.raw(`TRUNCATE TABLE ${getTableName(table)} RESTART IDENTITY CASCADE`)
+  );
+}
 
 const seedTeams = async (db: NodePgDatabase) => {
   const TEAMS = [
