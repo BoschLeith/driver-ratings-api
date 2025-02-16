@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
 import db from "../db";
-import { InsertRater, raters } from "../db/schema";
+import { InsertRater, raters } from "../db/schema/raters";
 
 export const getAllRaters = async () => {
   return await db.select().from(raters);

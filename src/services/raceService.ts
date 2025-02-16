@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
 import db from "../db";
-import { InsertRace, races } from "../db/schema";
+import { InsertRace, races } from "../db/schema/races";
 
 export const getAllRaces = async () => {
   return await db.select().from(races).orderBy(races.id);

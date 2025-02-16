@@ -1,0 +1,12 @@
+[
+  { "name": "Red Bull Racing", "fullName": "Oracle Red Bull Racing" },
+  { "name": "Mercedes", "fullName": "Mercedes-AMG PETRONAS F1 Team" },
+  { "name": "Ferrari", "fullName": "Scuderia Ferrari HP" },
+  { "name": "McLaren", "fullName": "McLaren Formula 1 Team" },
+  { "name": "Alpine", "fullName": "BWT Alpine F1 Team" },
+  { "name": "RB", "fullName": "Visa Cash App RB Formula One Team" },
+  { "name": "Aston Martin", "fullName": "Aston Martin Aramco F1 Team" },
+  { "name": "Williams", "fullName": "Williams Racing" },
+  { "name": "Kick Sauber", "fullName": "Stake F1 Team Kick Sauber" },
+  { "name": "Haas", "fullName": "MoneyGram Haas F1 Team" }
+]

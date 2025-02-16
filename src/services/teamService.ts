@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
 import db from "../db";
-import { InsertTeam, teams } from "../db/schema";
+import { InsertTeam, teams } from "../db/schema/teams";
 
 export const getAllTeams = async () => {
   return await db.select().from(teams);

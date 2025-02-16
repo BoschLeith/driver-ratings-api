@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
 import db from "../db";
-import { InsertDriverTeam, driverTeams } from "../db/schema";
+import { InsertDriverTeam, driverTeams } from "../db/schema/driverTeams";
 
 export const getAllDriverTeams = async () => {
   return await db.select().from(driverTeams);

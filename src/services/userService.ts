@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 
 import db from "../db";
-import { InsertUser, users } from "../db/schema";
+import { InsertUser, users } from "../db/schema/users";
 
 export const registerUser = async (user: InsertUser) => {
   const hashedPassword = await bcrypt.hash(user.password, 10);
