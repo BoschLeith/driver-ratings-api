@@ -3,6 +3,7 @@ import { Request, Response, Router } from "express";
 
 import {
   findUserByEmail,
+  findUserById,
   findUserByRefreshToken,
   insertRefreshToken,
   registerUser,
@@ -10,8 +11,11 @@ import {
 import {
   generateAccessToken,
   generateRefreshToken,
+  UserPayload,
+  verifyAccessToken,
   verifyRefreshToken,
 } from "../utils/jwt";
+import { decode } from "punycode";
 
 const router = Router();
 
@@ -70,6 +74,8 @@ router.post("/login", async (req: Request, res: Response) => {
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
+      sameSite: "none",
+      secure: true,
     });
     res.json({ email: user.email, accessToken });
   } catch (error) {
@@ -121,6 +127,8 @@ router.get("/logout", async (req: Request, res: Response) => {
     if (!user) {
       res.clearCookie("jwt", {
         httpOnly: true,
+        sameSite: "none",
+        secure: true,
       });
       return res.status(204).json({ message: "No content" });
     }
@@ -128,11 +136,36 @@ router.get("/logout", async (req: Request, res: Response) => {
     await insertRefreshToken(user.id, "");
     res.clearCookie("jwt", {
       httpOnly: true,
+      sameSite: "none",
+      secure: true,
     });
-    res.status(204).json({ message: "No content" });
+    res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.error("Error logging out user:", error);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/validate", async (req: Request, res: Response) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Access token is missing" });
+  }
+
+  try {
+    const decoded = verifyAccessToken(token);
+
+    if (!decoded) {
+      return res.status(401).json({ message: "Invalid access token" });
+    }
+
+    const [user] = await findUserById(decoded.userId);
+
+    return res.status(200).json({ user: user.email });
+  } catch (error) {
+    console.error("Error validating token:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

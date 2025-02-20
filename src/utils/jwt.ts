@@ -21,11 +21,11 @@ export const generateRefreshToken = (userPayload: UserPayload) => {
   return jwt.sign(userPayload, REFRESH_TOKEN_SECRET, { expiresIn: "1d" });
 };
 
-export const verifyAccessToken = (token: string): UserPayload => {
+export const verifyAccessToken = (token: string): UserPayload | undefined => {
   try {
     return jwt.verify(token, ACCESS_TOKEN_SECRET) as UserPayload;
   } catch (error) {
-    throw new Error("Invalid token");
+    return undefined;
   }
 };
 

@@ -17,6 +17,13 @@ export const findUserByEmail = async (email: string) => {
   return await db.select().from(users).where(eq(users.email, email));
 };
 
+export const findUserById = async (id: string) => {
+  return await db
+    .select()
+    .from(users)
+    .where(eq(users.id, Number(id)));
+};
+
 export const insertRefreshToken = async (
   userId: number,
   refreshToken: string
