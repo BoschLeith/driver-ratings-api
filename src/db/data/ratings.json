@@ -1,16 +1,16 @@
 [
   {
-    "driverTeamId": 1,
+    "resultId": 1,
     "raterId": 1,
     "rating": 10
   },
   {
-    "driverTeamId": 1,
+    "resultId": 1,
     "raterId": 2,
     "rating": 9
   },
   {
-    "driverTeamId": 1,
+    "resultId": 1,
     "raterId": 3,
     "rating": 8
   }

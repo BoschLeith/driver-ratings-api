@@ -1,0 +1,122 @@
+[
+  {
+    "driverId": 1,
+    "teamId": 1,
+    "raceId": 1,
+    "position": 1
+  },
+  {
+    "driverId": 2,
+    "teamId": 1,
+    "raceId": 1,
+    "position": 2
+  },
+  {
+    "driverId": 3,
+    "teamId": 2,
+    "raceId": 1,
+    "position": 7
+  },
+  {
+    "driverId": 4,
+    "teamId": 2,
+    "raceId": 1,
+    "position": 5
+  },
+  {
+    "driverId": 5,
+    "teamId": 3,
+    "raceId": 1,
+    "position": 4
+  },
+  {
+    "driverId": 6,
+    "teamId": 3,
+    "raceId": 1,
+    "position": 3
+  },
+  {
+    "driverId": 7,
+    "teamId": 4,
+    "raceId": 1,
+    "position": 6
+  },
+  {
+    "driverId": 8,
+    "teamId": 4,
+    "raceId": 1,
+    "position": 8
+  },
+  {
+    "driverId": 9,
+    "teamId": 5,
+    "raceId": 1,
+    "position": 17
+  },
+  {
+    "driverId": 10,
+    "teamId": 5,
+    "raceId": 1,
+    "position": 18
+  },
+  {
+    "driverId": 11,
+    "teamId": 6,
+    "raceId": 1,
+    "position": 14
+  },
+  {
+    "driverId": 12,
+    "teamId": 6,
+    "raceId": 1,
+    "position": 13
+  },
+  {
+    "driverId": 13,
+    "teamId": 7,
+    "raceId": 1,
+    "position": 9
+  },
+  {
+    "driverId": 14,
+    "teamId": 7,
+    "raceId": 1,
+    "position": 10
+  },
+  {
+    "driverId": 15,
+    "teamId": 8,
+    "raceId": 1,
+    "position": 15
+  },
+  {
+    "driverId": 16,
+    "teamId": 8,
+    "raceId": 1,
+    "position": 20
+  },
+  {
+    "driverId": 17,
+    "teamId": 9,
+    "raceId": 1,
+    "position": 19
+  },
+  {
+    "driverId": 18,
+    "teamId": 9,
+    "raceId": 1,
+    "position": 11
+  },
+  {
+    "driverId": 19,
+    "teamId": 10,
+    "raceId": 1,
+    "position": 12
+  },
+  {
+    "driverId": 20,
+    "teamId": 10,
+    "raceId": 1,
+    "position": 16
+  }
+]

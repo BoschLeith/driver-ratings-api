@@ -1,13 +1,13 @@
 import { sql } from "drizzle-orm";
 import { integer, pgTable, real, timestamp } from "drizzle-orm/pg-core";
 
-import { driverTeams } from "./driverTeams";
 import { raters } from "./raters";
+import { results } from "./results";
 
 export const ratings = pgTable("ratings", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  driverTeamId: integer("driver_team_id")
-    .references(() => driverTeams.id)
+  resultId: integer("result_id")
+    .references(() => results.id)
     .notNull(),
   raterId: integer("rater_id")
     .references(() => raters.id)
