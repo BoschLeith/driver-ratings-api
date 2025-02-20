@@ -44,16 +44,16 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 // Create a New Race
 router.post("/", authenticateJWT, async (req: Request, res: Response) => {
-  const { name, date } = req.body;
+  const { grandPrixId, date } = req.body;
 
-  if (!name || !date) {
+  if (!grandPrixId || !date) {
     return res
       .status(400)
-      .json({ success: false, message: "Name and Date are required" });
+      .json({ success: false, message: "Grand Prix ID and Date are required" });
   }
 
   try {
-    await createRace({ name, date });
+    await createRace({ grandPrixId, date });
     res.status(201).json({ message: "Race created successfully" });
   } catch (error) {
     console.error("Error creating race:", error);
@@ -64,12 +64,12 @@ router.post("/", authenticateJWT, async (req: Request, res: Response) => {
 // Update Race by ID
 router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, date } = req.body;
+  const { grandPrixId, date } = req.body;
 
-  if (!name || !date) {
+  if (!grandPrixId || !date) {
     return res
       .status(400)
-      .json({ success: false, message: "Name and Date are required" });
+      .json({ success: false, message: "Grand Prix ID and Date are required" });
   }
 
   try {
@@ -81,7 +81,7 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
         .json({ success: false, message: "Race not found" });
     }
 
-    await updateRace(Number(id), { name, date });
+    await updateRace(Number(id), { grandPrixId, date });
     res.status(200).json({ message: "Race updated successfully" });
   } catch (error) {
     console.error("Error updating race:", error);

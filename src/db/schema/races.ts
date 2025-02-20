@@ -15,5 +15,5 @@ export const races = pgTable("races", {
     .$onUpdate(() => new Date()),
 });
 
-export type InsertRater = typeof races.$inferInsert;
-export type SelectRater = typeof races.$inferSelect;
+export type InsertRace = typeof races.$inferInsert;
+export type SelectRace = typeof races.$inferSelect;

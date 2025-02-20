@@ -44,17 +44,17 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 // Create a New Rating
 router.post("/", authenticateJWT, async (req: Request, res: Response) => {
-  const { driverTeamId, raterId, rating } = req.body;
+  const { resultId, raterId, rating } = req.body;
 
-  if (!driverTeamId || !raterId || !rating) {
+  if (!resultId || !raterId || !rating) {
     return res.status(400).json({
       success: false,
-      message: "Driver Team ID, Rater ID, and Rating are required",
+      message: "Result ID, Rater ID, and Rating are required",
     });
   }
 
   try {
-    await createRating({ driverTeamId, raterId, rating });
+    await createRating({ resultId, raterId, rating });
     res.status(201).json({ message: "Rating created successfully" });
   } catch (error) {
     console.error("Error creating rating:", error);
@@ -65,12 +65,12 @@ router.post("/", authenticateJWT, async (req: Request, res: Response) => {
 // Update Rating by ID
 router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { driverTeamId, raterId, rating } = req.body;
+  const { resultId, raterId, rating } = req.body;
 
-  if (!driverTeamId || !raterId || !rating) {
+  if (!resultId || !raterId || !rating) {
     return res.status(400).json({
       success: false,
-      message: "Driver Team ID, Rater ID, and Rating are required",
+      message: "Result ID, Rater ID, and Rating are required",
     });
   }
 
@@ -83,7 +83,7 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
         .json({ success: false, message: "Rating not found" });
     }
 
-    await updateRating(Number(id), { driverTeamId, raterId, rating });
+    await updateRating(Number(id), { resultId, raterId, rating });
     res.status(200).json({ message: "Rating updated successfully" });
   } catch (error) {
     console.error("Error updating rating:", error);

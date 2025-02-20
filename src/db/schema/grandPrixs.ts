@@ -10,5 +10,5 @@ export const grandPrixs = pgTable("grand_prixs", {
     .$onUpdate(() => new Date()),
 });
 
-export type InsertRace = typeof grandPrixs.$inferInsert;
-export type SelectRace = typeof grandPrixs.$inferSelect;
+export type InsertGrandPrix = typeof grandPrixs.$inferInsert;
+export type SelectGrandPrix = typeof grandPrixs.$inferSelect;

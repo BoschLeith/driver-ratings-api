@@ -2,14 +2,15 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Request, Response } from "express";
 
+import morgan from "morgan";
 import authRouter from "./routes/authRoutes";
 import driverRouter from "./routes/driverRoutes";
-import driverTeamsRouter from "./routes/driverTeamsRoutes";
+import grandPrixRouter from "./routes/grandPrixRoutes";
 import raceRouter from "./routes/raceRoutes";
 import raterRouter from "./routes/raterRoutes";
 import ratingRouter from "./routes/ratingRoutes";
+import resultsRouter from "./routes/resultRoutes";
 import teamRouter from "./routes/teamRoutes";
-import morgan from "morgan";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,10 +32,11 @@ const apiRouter = express.Router();
 
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/drivers", driverRouter);
-apiRouter.use("/driverTeams", driverTeamsRouter);
+apiRouter.use("/grandPrixs", grandPrixRouter);
 apiRouter.use("/races", raceRouter);
 apiRouter.use("/raters", raterRouter);
 apiRouter.use("/ratings", ratingRouter);
+apiRouter.use("/results", resultsRouter);
 apiRouter.use("/teams", teamRouter);
 
 app.use("/api", apiRouter);

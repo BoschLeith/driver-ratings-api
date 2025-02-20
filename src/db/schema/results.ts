@@ -23,5 +23,5 @@ export const results = pgTable("results", {
     .$onUpdate(() => new Date()),
 });
 
-export type InsertDriverTeam = typeof results.$inferInsert;
-export type SelectDriverTeam = typeof results.$inferSelect;
+export type InsertResult = typeof results.$inferInsert;
+export type SelectResult = typeof results.$inferSelect;
