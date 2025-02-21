@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 import db from "../db";
 import { drivers, InsertDriver } from "../db/schema/drivers";
@@ -8,7 +8,11 @@ export const getAllDrivers = async () => {
 };
 
 export const getDriverById = async (id: number) => {
-  return await db.select().from(drivers).where(eq(drivers.id, id));
+  return await getDriversByIds([id]);
+};
+
+export const getDriversByIds = async (ids: number[]) => {
+  return await db.select().from(drivers).where(inArray(drivers.id, ids));
 };
 
 export const createDriver = async (driver: InsertDriver) => {

@@ -1,5 +1,290 @@
 [
   {
+    "resultId": 19,
+    "raterId": 1,
+    "rating": 7
+  },
+  {
+    "resultId": 19,
+    "raterId": 2,
+    "rating": 7
+  },
+  {
+    "resultId": 19,
+    "raterId": 3,
+    "rating": 8
+  },
+  {
+    "resultId": 20,
+    "raterId": 1,
+    "rating": 4
+  },
+  {
+    "resultId": 20,
+    "raterId": 2,
+    "rating": 3
+  },
+  {
+    "resultId": 20,
+    "raterId": 3,
+    "rating": 6
+  },
+  {
+    "resultId": 18,
+    "raterId": 1,
+    "rating": 9
+  },
+  {
+    "resultId": 18,
+    "raterId": 2,
+    "rating": 9
+  },
+  {
+    "resultId": 18,
+    "raterId": 3,
+    "rating": 8
+  },
+  {
+    "resultId": 17,
+    "raterId": 1,
+    "rating": 5
+  },
+  {
+    "resultId": 17,
+    "raterId": 2,
+    "rating": 5
+  },
+  {
+    "resultId": 17,
+    "raterId": 3,
+    "rating": 5
+  },
+  {
+    "resultId": 11,
+    "raterId": 1,
+    "rating": 6
+  },
+  {
+    "resultId": 11,
+    "raterId": 2,
+    "rating": 6
+  },
+  {
+    "resultId": 11,
+    "raterId": 3,
+    "rating": 5
+  },
+  {
+    "resultId": 12,
+    "raterId": 1,
+    "rating": 6
+  },
+  {
+    "resultId": 12,
+    "raterId": 2,
+    "rating": 5
+  },
+  {
+    "resultId": 12,
+    "raterId": 3,
+    "rating": 5
+  },
+  {
+    "resultId": 16,
+    "raterId": 1,
+    "rating": 5
+  },
+  {
+    "resultId": 16,
+    "raterId": 2,
+    "rating": 5
+  },
+  {
+    "resultId": 16,
+    "raterId": 3,
+    "rating": 4
+  },
+  {
+    "resultId": 15,
+    "raterId": 1,
+    "rating": 6
+  },
+  {
+    "resultId": 15,
+    "raterId": 2,
+    "rating": 6
+  },
+  {
+    "resultId": 15,
+    "raterId": 3,
+    "rating": 6
+  },
+  {
+    "resultId": 9,
+    "raterId": 1,
+    "rating": 4
+  },
+  {
+    "resultId": 9,
+    "raterId": 2,
+    "rating": 5
+  },
+  {
+    "resultId": 9,
+    "raterId": 3,
+    "rating": 5
+  },
+  {
+    "resultId": 10,
+    "raterId": 1,
+    "rating": 4
+  },
+  {
+    "resultId": 10,
+    "raterId": 2,
+    "rating": 4
+  },
+  {
+    "resultId": 10,
+    "raterId": 3,
+    "rating": 5
+  },
+  {
+    "resultId": 14,
+    "raterId": 1,
+    "rating": 8
+  },
+  {
+    "resultId": 14,
+    "raterId": 2,
+    "rating": 7
+  },
+  {
+    "resultId": 14,
+    "raterId": 3,
+    "rating": 8
+  },
+  {
+    "resultId": 13,
+    "raterId": 1,
+    "rating": 7
+  },
+  {
+    "resultId": 13,
+    "raterId": 2,
+    "rating": 7
+  },
+  {
+    "resultId": 13,
+    "raterId": 3,
+    "rating": 7
+  },
+  {
+    "resultId": 8,
+    "raterId": 1,
+    "rating": 7
+  },
+  {
+    "resultId": 8,
+    "raterId": 2,
+    "rating": 7
+  },
+  {
+    "resultId": 8,
+    "raterId": 3,
+    "rating": 7
+  },
+  {
+    "resultId": 7,
+    "raterId": 1,
+    "rating": 7
+  },
+  {
+    "resultId": 7,
+    "raterId": 2,
+    "rating": 7
+  },
+  {
+    "resultId": 7,
+    "raterId": 3,
+    "rating": 7
+  },
+  {
+    "resultId": 6,
+    "raterId": 1,
+    "rating": 9
+  },
+  {
+    "resultId": 6,
+    "raterId": 2,
+    "rating": 9
+  },
+  {
+    "resultId": 6,
+    "raterId": 3,
+    "rating": 9
+  },
+  {
+    "resultId": 5,
+    "raterId": 1,
+    "rating": 8
+  },
+  {
+    "resultId": 5,
+    "raterId": 2,
+    "rating": 8
+  },
+  {
+    "resultId": 5,
+    "raterId": 3,
+    "rating": 7
+  },
+  {
+    "resultId": 4,
+    "raterId": 1,
+    "rating": 8
+  },
+  {
+    "resultId": 4,
+    "raterId": 2,
+    "rating": 8
+  },
+  {
+    "resultId": 4,
+    "raterId": 3,
+    "rating": 7
+  },
+  {
+    "resultId": 3,
+    "raterId": 1,
+    "rating": 7
+  },
+  {
+    "resultId": 3,
+    "raterId": 2,
+    "rating": 7
+  },
+  {
+    "resultId": 3,
+    "raterId": 3,
+    "rating": 6
+  },
+  {
+    "resultId": 2,
+    "raterId": 1,
+    "rating": 8
+  },
+  {
+    "resultId": 2,
+    "raterId": 2,
+    "rating": 8
+  },
+  {
+    "resultId": 2,
+    "raterId": 3,
+    "rating": 8
+  },
+  {
     "resultId": 1,
     "raterId": 1,
     "rating": 10
@@ -7,11 +292,11 @@
   {
     "resultId": 1,
     "raterId": 2,
-    "rating": 9
+    "rating": 10
   },
   {
     "resultId": 1,
     "raterId": 3,
-    "rating": 8
+    "rating": 10
   }
 ]

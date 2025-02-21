@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 
 import { authenticateJWT } from "../middlewares/authMiddleware";
+import { getDriversByIds } from "../services/driverService";
 import {
   createRace,
   deleteRace,
@@ -8,6 +9,7 @@ import {
   getRaceById,
   updateRace,
 } from "../services/raceService";
+import { getResultsByYear } from "../services/resultService";
 
 const router = Router();
 
@@ -106,6 +108,38 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
     res.status(200).json({ message: "Race deleted successfully" });
   } catch (error) {
     console.error("Error deleting race:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+router.get("/:year/results", async (req: Request, res: Response) => {
+  const { year } = req.params;
+
+  try {
+    const results = await getResultsByYear(Number(year));
+    const uniqueDriverIds = [
+      ...new Set(results.map((result) => result.driverId)),
+    ];
+    const drivers = await getDriversByIds(uniqueDriverIds);
+
+    const finalResult = uniqueDriverIds.map((driverId) => {
+      const driverName = drivers.find((driver) => driver.id === driverId)?.name;
+      return {
+        name: driverName,
+        position: results.find((result) => result.driverId === driverId)
+          ?.position,
+        ratings: results
+          .filter((result) => result.driverId === driverId)
+          .map((result) => ({
+            rating: result.rating,
+            raterName: result.name,
+          })),
+      };
+    });
+
+    res.status(200).json({ success: true, data: { drivers: finalResult } });
+  } catch (error) {
+    console.error("Error fetching results:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });

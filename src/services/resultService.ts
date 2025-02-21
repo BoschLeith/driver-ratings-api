@@ -1,6 +1,9 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import db from "../db";
+import { races } from "../db/schema/races";
+import { raters } from "../db/schema/raters";
+import { ratings } from "../db/schema/ratings";
 import { InsertResult, results } from "../db/schema/results";
 
 export const getAllResults = async () => {
@@ -21,4 +24,20 @@ export const updateResult = async (id: number, result: InsertResult) => {
 
 export const deleteResult = async (id: number) => {
   await db.delete(results).where(eq(results.id, id));
+};
+
+export const getResultsByYear = async (year: number) => {
+  return await db
+    .select({
+      driverId: results.driverId,
+      raterId: ratings.raterId,
+      rating: ratings.rating,
+      name: raters.name,
+      position: results.position,
+    })
+    .from(results)
+    .innerJoin(ratings, eq(results.id, ratings.resultId))
+    .innerJoin(raters, eq(ratings.raterId, raters.id))
+    .innerJoin(races, eq(results.raceId, races.id))
+    .where(sql`EXTRACT(YEAR FROM ${races.date}) = ${year}`);
 };
