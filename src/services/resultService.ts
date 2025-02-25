@@ -29,6 +29,7 @@ export const deleteResult = async (id: number) => {
 export const getResultsByYear = async (year: number) => {
   return await db
     .select({
+      raceId: results.raceId,
       driverId: results.driverId,
       raterId: ratings.raterId,
       rating: ratings.rating,
@@ -39,5 +40,6 @@ export const getResultsByYear = async (year: number) => {
     .innerJoin(ratings, eq(results.id, ratings.resultId))
     .innerJoin(raters, eq(ratings.raterId, raters.id))
     .innerJoin(races, eq(results.raceId, races.id))
-    .where(sql`EXTRACT(YEAR FROM ${races.date}) = ${year}`);
+    .where(sql`EXTRACT(YEAR FROM ${races.date}) = ${year}`)
+    .orderBy(results.position);
 };

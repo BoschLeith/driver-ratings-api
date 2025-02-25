@@ -122,22 +122,31 @@ router.get("/:year/results", async (req: Request, res: Response) => {
     ];
     const drivers = await getDriversByIds(uniqueDriverIds);
 
-    const finalResult = uniqueDriverIds.map((driverId) => {
-      const driverName = drivers.find((driver) => driver.id === driverId)?.name;
-      return {
-        name: driverName,
-        position: results.find((result) => result.driverId === driverId)
-          ?.position,
-        ratings: results
-          .filter((result) => result.driverId === driverId)
-          .map((result) => ({
-            rating: result.rating,
-            raterName: result.name,
-          })),
-      };
-    });
+    const data = Array.from(new Set(results.map((r) => r.raceId))).map(
+      (raceId) => ({
+        raceId: Number(raceId),
+        drivers: Array.from(
+          new Set(
+            results.filter((r) => r.raceId === raceId).map((r) => r.driverId)
+          )
+        ).map((driverId) => {
+          const driverResults = results.filter(
+            (r) => r.driverId === driverId && r.raceId === raceId
+          );
+          return {
+            id: driverId,
+            name: drivers.find((d) => d.id === driverId)?.name,
+            position: driverResults[0].position,
+            ratings: driverResults.map((r) => ({
+              rating: r.rating,
+              raterName: r.name,
+            })),
+          };
+        }),
+      })
+    );
 
-    res.status(200).json({ success: true, data: { drivers: finalResult } });
+    res.status(200).json({ success: true, data });
   } catch (error) {
     console.error("Error fetching results:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
