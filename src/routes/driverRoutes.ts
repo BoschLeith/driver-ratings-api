@@ -44,16 +44,16 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 // Create a New Driver
 router.post("/", authenticateJWT, async (req: Request, res: Response) => {
-  const { name } = req.body;
+  const { firstName, lastName, driverCode } = req.body;
 
-  if (!name) {
+  if (!firstName || !lastName || !driverCode) {
     return res
       .status(400)
       .json({ success: false, message: "Name is required" });
   }
 
   try {
-    await createDriver({ name });
+    await createDriver({ firstName, lastName, driverCode });
     res.status(201).json({ message: "Driver created successfully" });
   } catch (error) {
     console.error("Error creating driver:", error);
@@ -64,12 +64,15 @@ router.post("/", authenticateJWT, async (req: Request, res: Response) => {
 // Update Driver by ID
 router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { firstName, lastName, driverCode } = req.body;
 
-  if (!name) {
+  if (!firstName || !lastName || !driverCode) {
     return res
       .status(400)
-      .json({ success: false, message: "Name is required" });
+      .json({
+        success: false,
+        message: "FIrst name, last name, and driver code are required",
+      });
   }
 
   try {
@@ -81,7 +84,7 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
         .json({ success: false, message: "Driver not found" });
     }
 
-    await updateDriver(Number(id), { name });
+    await updateDriver(Number(id), { firstName, lastName, driverCode });
     res.status(200).json({ message: "Driver updated successfully" });
   } catch (error) {
     console.error("Error updating driver:", error);

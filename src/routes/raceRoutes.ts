@@ -135,7 +135,7 @@ router.get("/:year/results", async (req: Request, res: Response) => {
           );
           return {
             id: driverId,
-            name: drivers.find((d) => d.id === driverId)?.name,
+            driverCode: drivers.find((d) => d.id === driverId)?.driverCode,
             position: driverResults[0].position,
             ratings: driverResults.map((r) => ({
               rating: r.rating,
