@@ -5,7 +5,6 @@ export const users = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   email: text().notNull().unique(),
   password: text().notNull(),
-  refreshToken: text("refresh_token").default(sql`NULL`),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .default(sql`NULL`)

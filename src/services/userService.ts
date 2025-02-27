@@ -23,17 +23,3 @@ export const findUserById = async (id: string) => {
     .from(users)
     .where(eq(users.id, Number(id)));
 };
-
-export const insertRefreshToken = async (
-  userId: number,
-  refreshToken: string
-) => {
-  await db.update(users).set({ refreshToken }).where(eq(users.id, userId));
-};
-
-export const findUserByRefreshToken = async (refreshToken: string) => {
-  return await db
-    .select()
-    .from(users)
-    .where(eq(users.refreshToken, refreshToken));
-};
