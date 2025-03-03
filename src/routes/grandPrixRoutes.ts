@@ -6,6 +6,7 @@ import {
   deleteGrandPrix,
   getAllGrandPrixs,
   getGrandPrixById,
+  getGrandPrixRaces,
   updateGrandPrix,
 } from "../services/grandPrixService";
 
@@ -106,6 +107,26 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
     res.status(200).json({ message: "Grand Prix deleted successfully" });
   } catch (error) {
     console.error("Error deleting Grand Prix:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+// Get Grand Prix by ID
+router.get("/:id/races", async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const races = await getGrandPrixRaces(Number(id));
+
+    if (!races) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Grand Prix Races not found" });
+    }
+
+    res.status(200).json({ success: true, data: races });
+  } catch (error) {
+    console.error("Error fetching Grand Prix Races:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
