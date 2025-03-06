@@ -17,6 +17,10 @@ export const authenticateJWT = (
 
   try {
     req.user = verifyAccessToken(token);
+    if (!req.user) {
+      res.status(401).json({ message: "Invalid or expired token" });
+      return;
+    }
     next();
   } catch (error) {
     res.status(401).json({ message: "Invalid or expired token" });
