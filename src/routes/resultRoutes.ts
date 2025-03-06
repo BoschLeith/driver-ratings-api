@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 
+import { InsertResult } from "../db/schema/results";
 import { authenticateJWT } from "../middlewares/authMiddleware";
 import {
   createResult,
@@ -44,20 +45,39 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 // Create a New Result
 router.post("/", authenticateJWT, async (req: Request, res: Response) => {
-  const { driverId, teamId, raceId, position } = req.body;
+  const results: InsertResult[] = req.body.results;
 
-  if (!driverId || !teamId || !raceId || !position) {
+  if (!Array.isArray(results) || results.length === 0) {
     return res.status(400).json({
       success: false,
-      message: "Driver ID, Team ID, Race ID, and Position are required",
+      message: "An array of results is required",
+    });
+  }
+
+  const invalidResult = results.find(
+    (result) =>
+      !result.driverId || !result.teamId || !result.raceId || !result.position
+  );
+
+  if (invalidResult) {
+    return res.status(400).json({
+      success: false,
+      message:
+        "Driver ID, Team ID, Race ID, and Position are required for each result",
     });
   }
 
   try {
-    await createResult({ driverId, teamId, raceId, position });
-    res.status(201).json({ message: "Result created successfully" });
+    const insertedResults = await createResult(results);
+
+    console.log("Inserted Results:", insertedResults);
+    res.status(201).json({
+      success: true,
+      data: insertedResults,
+      message: "Results created successfully",
+    });
   } catch (error) {
-    console.error("Error creating result:", error);
+    console.error("Error creating results:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });

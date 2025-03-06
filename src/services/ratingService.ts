@@ -11,7 +11,7 @@ export const getRatingById = async (id: number) => {
   return await db.select().from(ratings).where(eq(ratings.id, id));
 };
 
-export const createRating = async (rating: InsertRating) => {
+export const createRating = async (rating: InsertRating[]) => {
   await db.insert(ratings).values(rating);
 };
 

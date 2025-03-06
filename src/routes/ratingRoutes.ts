@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 
+import { InsertRating } from "../db/schema/ratings";
 import { authenticateJWT } from "../middlewares/authMiddleware";
 import {
   createRating,
@@ -44,20 +45,31 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 // Create a New Rating
 router.post("/", authenticateJWT, async (req: Request, res: Response) => {
-  const { resultId, raterId, rating } = req.body;
+  const ratings: InsertRating[] = req.body.ratings;
 
-  if (!resultId || !raterId || !rating) {
+  if (!Array.isArray(ratings) || ratings.length === 0) {
     return res.status(400).json({
       success: false,
-      message: "Result ID, Rater ID, and Rating are required",
+      message: "An array of ratings is required",
+    });
+  }
+
+  const invalidRating = ratings.find(
+    (rating) => !rating.resultId || !rating.raterId || !rating.rating
+  );
+
+  if (invalidRating) {
+    return res.status(400).json({
+      success: false,
+      message: "Result ID, Rater ID, and Rating are required for each rating",
     });
   }
 
   try {
-    await createRating({ resultId, raterId, rating });
-    res.status(201).json({ message: "Rating created successfully" });
+    await createRating(ratings);
+    res.status(201).json({ message: "Ratings created successfully" });
   } catch (error) {
-    console.error("Error creating rating:", error);
+    console.error("Error creating ratings:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });

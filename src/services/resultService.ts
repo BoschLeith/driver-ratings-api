@@ -14,8 +14,11 @@ export const getResultById = async (id: number) => {
   return await db.select().from(results).where(eq(results.id, id));
 };
 
-export const createResult = async (result: InsertResult) => {
-  await db.insert(results).values(result);
+export const createResult = async (result: InsertResult[]) => {
+  return await db
+    .insert(results)
+    .values(result)
+    .returning({ id: results.id, driverId: results.driverId });
 };
 
 export const updateResult = async (id: number, result: InsertResult) => {
