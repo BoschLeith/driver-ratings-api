@@ -14,12 +14,15 @@ import teamRouter from "./routes/teamRoutes";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://127.0.0.1:5173";
+const isDev = process.env.NODE_ENV !== "production";
+const CORS_ORIGIN = isDev
+  ? process.env.CORS_ORIGIN_DEV
+  : process.env.CORS_ORIGIN_PROD;
 
 app.use(
   cors({
     origin: CORS_ORIGIN,
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
