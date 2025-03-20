@@ -22,7 +22,7 @@ const CORS_ORIGIN = isDev
 app.use(
   cors({
     origin: CORS_ORIGIN,
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
