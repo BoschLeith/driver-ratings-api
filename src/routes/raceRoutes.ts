@@ -17,10 +17,16 @@ const router = Router();
 router.get("/", async (req: Request, res: Response) => {
   try {
     const races = await getAllRaces();
-    res.status(200).json({ success: true, data: races });
+    res.status(200).json({
+      success: true,
+      message: "Races retrieved successfully",
+      data: races,
+    });
   } catch (error) {
     console.error("Error fetching races:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
@@ -34,13 +40,19 @@ router.get("/:id", async (req: Request, res: Response) => {
     if (!race) {
       return res
         .status(404)
-        .json({ success: false, message: "Race not found" });
+        .json({ success: false, message: "Race not found", data: null });
     }
 
-    res.status(200).json({ success: true, data: race });
+    res.status(200).json({
+      success: true,
+      message: "Race retrieved successfully",
+      data: race,
+    });
   } catch (error) {
     console.error("Error fetching race:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
@@ -49,17 +61,25 @@ router.post("/", authenticateJWT, async (req: Request, res: Response) => {
   const { grandPrixId, date } = req.body;
 
   if (!grandPrixId || !date) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Grand Prix ID and Date are required" });
+    return res.status(400).json({
+      success: false,
+      message: "Grand Prix ID and Date are required",
+      data: null,
+    });
   }
 
   try {
-    await createRace({ grandPrixId, date });
-    res.status(201).json({ message: "Race created successfully" });
+    const [race] = await createRace({ grandPrixId, date });
+    res.status(201).json({
+      success: true,
+      message: "Race created successfully",
+      data: race,
+    });
   } catch (error) {
     console.error("Error creating race:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
@@ -69,9 +89,11 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { grandPrixId, date } = req.body;
 
   if (!grandPrixId || !date) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Grand Prix ID and Date are required" });
+    return res.status(400).json({
+      success: false,
+      message: "Grand Prix ID and Date are required",
+      data: null,
+    });
   }
 
   try {
@@ -80,14 +102,20 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
     if (!existingRace) {
       return res
         .status(404)
-        .json({ success: false, message: "Race not found" });
+        .json({ success: false, message: "Race not found", data: null });
     }
 
-    await updateRace(Number(id), { grandPrixId, date });
-    res.status(200).json({ message: "Race updated successfully" });
+    const [updatedRace] = await updateRace(Number(id), { grandPrixId, date });
+    res.status(200).json({
+      success: true,
+      message: "Race updated successfully",
+      data: updatedRace,
+    });
   } catch (error) {
     console.error("Error updating race:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
@@ -101,14 +129,20 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
     if (!existingRace) {
       return res
         .status(404)
-        .json({ success: false, message: "Race not found" });
+        .json({ success: false, message: "Race not found", data: null });
     }
 
-    await deleteRace(Number(id));
-    res.status(200).json({ message: "Race deleted successfully" });
+    const [deletedRace] = await deleteRace(Number(id));
+    res.status(200).json({
+      success: true,
+      message: "Race deleted successfully",
+      data: deletedRace,
+    });
   } catch (error) {
     console.error("Error deleting race:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
@@ -146,10 +180,14 @@ router.get("/:year/results", async (req: Request, res: Response) => {
       })
     );
 
-    res.status(200).json({ success: true, data });
+    res
+      .status(200)
+      .json({ success: true, message: "Results retrieved successfully", data });
   } catch (error) {
     console.error("Error fetching results:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 

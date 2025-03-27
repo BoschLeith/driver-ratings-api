@@ -12,13 +12,13 @@ export const getRaceById = async (id: number) => {
 };
 
 export const createRace = async (race: InsertRace) => {
-  await db.insert(races).values(race);
+  return await db.insert(races).values(race).returning();
 };
 
 export const updateRace = async (id: number, race: InsertRace) => {
-  await db.update(races).set(race).where(eq(races.id, id));
+  return await db.update(races).set(race).where(eq(races.id, id)).returning();
 };
 
 export const deleteRace = async (id: number) => {
-  await db.delete(races).where(eq(races.id, id));
+  return await db.delete(races).where(eq(races.id, id)).returning();
 };
