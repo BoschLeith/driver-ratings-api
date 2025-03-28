@@ -12,13 +12,13 @@ export const getTeamById = async (id: number) => {
 };
 
 export const createTeam = async (team: InsertTeam) => {
-  await db.insert(teams).values(team);
+  return await db.insert(teams).values(team).returning();
 };
 
 export const updateTeam = async (id: number, team: InsertTeam) => {
-  await db.update(teams).set(team).where(eq(teams.id, id));
+  return await db.update(teams).set(team).where(eq(teams.id, id)).returning();
 };
 
 export const deleteTeam = async (id: number) => {
-  await db.delete(teams).where(eq(teams.id, id));
+  return await db.delete(teams).where(eq(teams.id, id)).returning();
 };

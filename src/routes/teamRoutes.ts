@@ -15,10 +15,16 @@ const router = Router();
 router.get("/", async (req: Request, res: Response) => {
   try {
     const teams = await getAllTeams();
-    res.status(200).json({ success: true, data: teams });
+    res.status(200).json({
+      success: true,
+      message: "Teams retrieved successfully",
+      data: teams,
+    });
   } catch (error) {
     console.error("Error fetching teams:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
@@ -32,13 +38,19 @@ router.get("/:id", async (req: Request, res: Response) => {
     if (!team) {
       return res
         .status(404)
-        .json({ success: false, message: "Team not found" });
+        .json({ success: false, message: "Team not found", data: null });
     }
 
-    res.status(200).json({ success: true, data: team });
+    res.status(200).json({
+      success: true,
+      message: "Team retrieved successfully",
+      data: team,
+    });
   } catch (error) {
     console.error("Error fetching team:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
@@ -47,17 +59,25 @@ router.post("/", authenticateJWT, async (req: Request, res: Response) => {
   const { name, fullName } = req.body;
 
   if (!name || !fullName) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Name and Full Name are required" });
+    return res.status(400).json({
+      success: false,
+      message: "Name and Full Name are required",
+      data: null,
+    });
   }
 
   try {
-    await createTeam({ name, fullName });
-    res.status(201).json({ message: "Team created successfully" });
+    const [team] = await createTeam({ name, fullName });
+    res.status(201).json({
+      success: true,
+      message: "Team created successfully",
+      data: team,
+    });
   } catch (error) {
     console.error("Error creating team:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
@@ -67,9 +87,11 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
   const { name, fullName } = req.body;
 
   if (!name || !fullName) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Name and Full Name are required" });
+    return res.status(400).json({
+      success: false,
+      message: "Name and Full Name are required",
+      data: null,
+    });
   }
 
   try {
@@ -78,14 +100,20 @@ router.put("/:id", authenticateJWT, async (req: Request, res: Response) => {
     if (!existingTeam) {
       return res
         .status(404)
-        .json({ success: false, message: "Team not found" });
+        .json({ success: false, message: "Team not found", data: null });
     }
 
-    await updateTeam(Number(id), { name, fullName });
-    res.status(200).json({ message: "Team updated successfully" });
+    const [team] = await updateTeam(Number(id), { name, fullName });
+    res.status(200).json({
+      success: true,
+      message: "Team updated successfully",
+      data: team,
+    });
   } catch (error) {
     console.error("Error updating team:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
@@ -99,14 +127,20 @@ router.delete("/:id", authenticateJWT, async (req: Request, res: Response) => {
     if (!existingTeam) {
       return res
         .status(404)
-        .json({ success: false, message: "Team not found" });
+        .json({ success: false, message: "Team not found", data: null });
     }
 
-    await deleteTeam(Number(id));
-    res.status(200).json({ message: "Team deleted successfully" });
+    const [team] = await deleteTeam(Number(id));
+    res.status(200).json({
+      success: true,
+      message: "Team deleted successfully",
+      data: team,
+    });
   } catch (error) {
     console.error("Error deleting team:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", data: null });
   }
 });
 
